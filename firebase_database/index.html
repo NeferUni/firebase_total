@@ -1,0 +1,54 @@
+<form id="miFormulario">
+    <p>Ingresa tu nombre</p>
+    <input type="text" name="nombre" id="nombre" required />
+    <p>Ingresa tu email</p>
+    <input type="email" name="email" id="email" required />
+    <button type="submit">Enviar</button>
+  </form>
+  
+  <script type="module">
+    // Import the necessary functions from the Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCntm8--LTmBSDhB0AkzSVsuVMfu2q8GAs",
+      authDomain: "erudite-visitor-371500.firebaseapp.com",
+      projectId: "erudite-visitor-371500",
+      storageBucket: "erudite-visitor-371500.appspot.com",
+      messagingSenderId: "622372100237",
+      appId: "1:622372100237:web:ea52d6b697a1dc270f6ac4",
+      measurementId: "G-0TJ4CD5YNK"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    // Capture the form submission event
+    document.getElementById("miFormulario").addEventListener("submit", async function(event) {
+      event.preventDefault(); // Prevents the default form behavior
+  
+      // Get the values from the input fields
+      const nombre = document.getElementById("nombre").value;
+      const email = document.getElementById("email").value;
+  
+      try {
+        // Add the data to Firestore
+        const docRef = await addDoc(collection(db, "usuarios"), {
+          nombre: nombre,
+          email: email
+        });
+        console.log("Documento añadido con ID: ", docRef.id);
+        
+        console.log("Se ha añadido un nuevo usuario");
+        
+        // Reset the form after submission
+        document.getElementById("miFormulario").reset();
+      } catch (error) {
+        console.error("Error al añadir documento: ", error);
+      }
+    });
+  </script>
+  
